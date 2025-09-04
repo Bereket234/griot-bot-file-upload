@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GriotBot Secure File Upload
+
+This project is a secure file upload flow built with [Next.js](https://nextjs.org), using AWS S3 signed URLs and multiple security measures to ensure safe and temporary file storage.
+
+## Features
+
+- **Secure AWS S3 Signed Uploads:** Files are uploaded directly to S3 using signed URLs.
+- **File Validation:** Only JPG, PNG, WEBP, and PDF files up to 10MB are accepted.
+- **SHA256 Checksum:** Ensures file integrity during upload.
+- **Unguessable File Names:** Files are saved with a 32-byte hash for security.
+- **Temporary Storage:** Files are automatically deleted from S3 after 24 hours.
+- **Frontend Restrictions:** File input only accepts allowed types and sizes, with clear error messages.
+- **Domain Whitelisting:** S3 only accepts uploads from whitelisted domains.
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   git clone https://github.com/Bereket234/griot-bot-file-upload.git
+   cd griot-bot-file-upload
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies:**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Configure environment variables:**
 
-## Learn More
+   - Copy `.env.example` to `.env` and fill in your AWS credentials and other required variables.
 
-To learn more about Next.js, take a look at the following resources:
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is deployed on Vercel:  
+[https://griot-bot-file-upload.vercel.app/](https://griot-bot-file-upload.vercel.app/)
 
-## Deploy on Vercel
+## Security Measures
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Backend validation** of file type, size, and checksum before signing S3 URLs.
+- **Frontend validation** to prevent invalid files from being selected.
+- **SHA256 checksum** used to verify file integrity.
+- **MIME type and Content-Type headers** enforced during upload.
+- **Randomized file names** to prevent guessing.
+- **S3 lifecycle policy** deletes files after 24 hours.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## File Structure
+
+- `src/app/page.js` – Main frontend logic for file upload and listing.
+- `src/app/api/s3-presign/route.js` – API route for signing S3 URLs and validating uploads.
+
+## License
